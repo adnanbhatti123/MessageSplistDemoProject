@@ -11,22 +11,27 @@ import Firebase
 import FirebaseUI
 
 // MARK: ViewController extention
-extension ViewController: UITextViewDelegate,FUIAuthDelegate{
+extension ViewController: UITextViewDelegate,FUIAuthDelegate,ShowMessageListDelegate{
+  
+    
     //MARK: Action Method
     @IBAction func postButtonClicked() {
-        loginWithTwitter()
-        if textView.text.isEmpty() {
+       if textView.text.isEmpty() {
             Utilities.showAlert(Constants.alert, message:Constants.enterTextAlert, viewController: self)
             return;
         }
         
         
         let result =  Utilities.splistMessage(message: textView.text)
-        if(result.count > 0){
+        if (result.count == 1){
+            Utilities.showAlert(Constants.alert, message:Constants.messageSentAlert, viewController: self)
+        }
+        else if(result.count > 1){
             self.showMessageListObj.setMessagesList(messagesList: result)
             self.showMessageListObj.showHideView()
             self.showMessageListObj.reloadTableView()
-        }else{
+        }
+        else{
             Utilities.showAlert(Constants.alert, message:Constants.formattingAlert, viewController: self)
         }
     }
@@ -40,81 +45,12 @@ extension ViewController: UITextViewDelegate,FUIAuthDelegate{
         return true
     }
     
-    func loginWithTwitter(){
-        /*
-         let credential = TwitterAuthProvider.credential(withToken: "2577049070-FS8JO0PZzYfxes7MnFfJHLdgvdz5zhm2EXmAkfY", secret: "KIMH8LtNJZ5C2CcNAMqj4rGAOvJKNdjVuTUSAsNxw1ORO")
-         
-         Auth.auth().createUser(withEmail: "adnanqadir12@yahoo.com", password: "abctest") { (authResult, error) in
-         if error != nil {
-         // Handle error.
-         }
-         // User is signed in.
-         // IdP data available in authResult.additionalUserInfo.profile.
-         // Twitter OAuth access token can also be retrieved by:
-         // authResult.credential.accessToken
-         // Twitter OAuth ID token can be retrieved by calling:
-         // authResult.credential.idToken
-         // Twitter OAuth secret can be retrieved by calling:
-         // authResult.credential.secret
-         print(authResult?.user.email as Any)
-         }
-         */
-        /*
-         TWTRTwitter.sharedInstance().logIn(with: self) { (session, error) in
-         if (session != nil) {
-         print("signed in as \(session!.userName)");
-         } else {
-         print("error: \(error!.localizedDescription)");
-         }
-         }
-         */
-        /*
-         TWTRTwitter.sharedInstance().logIn(completion: { (session, error) in
-         if (session != nil) {
-         print("signed in as \(session!.userName)");
-         } else {
-         print("error: \(error!.localizedDescription)");
-         }
-         })
-         }
-         */
-        
-        /*
-         Auth.auth().signInAndRetrieveData(with: credential) { authResult, error in
-         if error != nil {
-         // Handle error.
-         }
-         // User is signed in.
-         // IdP data available in authResult.additionalUserInfo.profile.
-         // Twitter OAuth access token can also be retrieved by:
-         // authResult.credential.accessToken
-         // Twitter OAuth ID token can be retrieved by calling:
-         // authResult.credential.idToken
-         // Twitter OAuth secret can be retrieved by calling:
-         // authResult.credential.secret
-         print(authResult?.user.email as Any)
-         }
-         
-         }
-         */
-        /*
-         let authUI = FUIAuth.defaultAuthUI()
-         // You need to adopt a FUIAuthDelegate protocol to receive callback
-         authUI!.delegate = (self as FUIAuthDelegate)
-         
-         let providers: [FUIAuthProvider] = [
-         FUITwitterAuth()
-         ]
-         authUI!.providers = providers
-         let authViewController = authUI!.authViewController()
-         self.present(authViewController, animated: true, completion: nil)
-         */
-    }
     
+    //MARK: Initialize MessageListVC
     func showMessageListVC(){
         if(showMessageListObj == nil){
             showMessageListObj = self.storyboard?.instantiateViewController(identifier: Constants.messageVCIdentifier)
-            
+            showMessageListObj.delegate = self
             self.addChild(self.showMessageListObj!)
             self.showMessageListObj!.didMove(toParent: self)
             self.view.addSubview(self.showMessageListObj.view)
@@ -123,10 +59,12 @@ extension ViewController: UITextViewDelegate,FUIAuthDelegate{
         
     }
     
-    func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
-        // handle user and error as necessary
-    }
     
+    
+    // MARK: Post Message
+    func postMessge() {
+        Utilities.showAlert(Constants.alert, message: Constants.messageSentAlert, viewController: self)
+      }
     
 }
 
@@ -152,6 +90,7 @@ extension ShowMessagesListVC:UITableViewDelegate,UITableViewDataSource{
     
     // MARK: IBAction Methods
     @IBAction func sendButtonClicked(){
+        self.delegate?.postMessge()
         showHideView()
     }
     

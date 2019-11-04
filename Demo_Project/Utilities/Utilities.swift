@@ -11,44 +11,50 @@ import UIKit
 class Utilities: NSObject {
     
     //MARK: Split message into chunks
-     class func splistMessage(message:String) -> [String]{
+    class func splistMessage(message:String) -> [String]{
         if(message.length <= 50){
             return [message];
         }
         
         var resultArray = [String]()
-        var resultString:String = ""
-        var totalChunks = message.length/(Constants.chunkSize + 1)
-        
-        if(message.length % Constants.chunkSize != 0){
-            totalChunks = totalChunks + 1
-        }
-        
-        for  i in 0..<totalChunks{
-            let remainingMessage = (message.length - (resultArray.count * Constants.chunkSize)) - (totalChunks - 1)
-            
-            if(i < totalChunks - 1 && message[(((i+1)*Constants.chunkSize)) + i] != " " ){
-                return  [String]()
-            }
-            
-            if(remainingMessage < Constants.chunkSize){
-                resultString = message[((i*Constants.chunkSize) + i) ..<  (((i*Constants.chunkSize) + i)+remainingMessage)]
+        var characterDivided = 0
+        while characterDivided < message.length {
+            var messageChunk = message[characterDivided ..< (Constants.chunkSize + characterDivided)]
+            let remainingCharacters = message.length - characterDivided
+            if(remainingCharacters <= Constants.chunkSize ){
+                resultArray.append(messageChunk)
+                characterDivided = characterDivided + Constants.chunkSize
+                break
             }else{
-                resultString = message[((i*Constants.chunkSize) + i) ..< (((i+1)*Constants.chunkSize)) + i]
+                if(messageChunk.contains(" ")){
+                    var spaceIndex = 0
+                    let reversedCollection = (0 ..< messageChunk.length).reversed()
+                    for i in reversedCollection{
+                        if(messageChunk[i] == " "){
+                            spaceIndex = i
+                            break
+                        }
+                    }
+                    if (spaceIndex < Constants.chunkSize - 1){
+                        messageChunk = message[characterDivided ..< (spaceIndex + characterDivided)]
+                        resultArray.append(messageChunk)
+                        characterDivided = characterDivided + messageChunk.length + 1
+                        
+                    }else{
+                        resultArray.append(String(messageChunk.dropLast()))
+                        characterDivided = characterDivided + Constants.chunkSize
+                    }
+                    
+                    
+                }else{
+                    return  [String]()
+                }
             }
-            
-            if(resultString.isEmpty()){
-                continue;
-            }
-            
-            resultArray.append(resultString)
-            resultString = ""
         }
         
         for i in 0..<resultArray.count{
             resultArray[i] = "\(i+1)/\(resultArray.count) \(resultArray[i])"
         }
-        
         return resultArray
     }
     
@@ -60,7 +66,6 @@ class Utilities: NSObject {
             
         }))
         viewController.present(alert, animated: true, completion: nil)
-        
     }
     
 }

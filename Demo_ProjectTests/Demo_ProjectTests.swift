@@ -37,7 +37,7 @@ class Demo_ProjectTests: XCTestCase {
     func testForFalseTextFormating() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let result =  Utilities.splistMessage(message:"\(Constants.text)\(Constants.text)" )
+        let result =  Utilities.splistMessage(message:"\(Constants.failText)" )
         if(result.count > 0){
           XCTAssert(true)
         }else{

@@ -12,3 +12,7 @@ protocol Traceable {
     var borderColor: UIColor? { get set }
     var borderWidth: CGFloat { get set }
 }
+
+protocol ShowMessageListDelegate:NSObjectProtocol {
+    func postMessge()
+}

@@ -13,6 +13,7 @@ class ShowMessagesListVC: UIViewController{
     @IBOutlet weak var cancelButton:UIButton!
     @IBOutlet weak var sendButton:UIButton!
     var messagesList = [String]()
+    weak var delegate:ShowMessageListDelegate?
     override func viewDidLoad() {
         
     }

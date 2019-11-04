@@ -9,11 +9,13 @@
 import UIKit
 
 class Constants: NSObject {
-   static let text = "I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself."
+    static let text = "I can't believe Tweeter now supports chunking my messages, so I don't have to do it myself."
+    static let failText = "sdfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsffdsfsdfdsfdsfdsfdsfsdfsdfdsfsdfsdfsdfsdfsdfsdfdsf"
     static let formattingAlert = "Text formatting is not correct."
+    static let messageSentAlert = "Message sent successfully."
     static let enterTextAlert = "Please Enter Valid Text"
     static let alert = "Alert"
-    static let chunkSize = 45
+    static let chunkSize = 46
     static let cellIdentifier = "MessageCell"
     static let cellLabelTag = 1
     static let messageVCIdentifier = "ShowMessagesListVC"
