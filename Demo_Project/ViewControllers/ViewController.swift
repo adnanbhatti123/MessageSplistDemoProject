@@ -18,9 +18,21 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         textView.text = Constants.text
         showMessageListVC()
+        print(checkNoOfRepetitions(array: [2,3,4,3,2,1,3], repetedNo: 3))
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    func checkNoOfRepetitions(array:[Int],arrayLength:Int) -> Int{
+        var numbOfRepetition = 0
+        for i in 0..<array.count{
+            if(repetedNo == array[i]){
+                numbOfRepetition = numbOfRepetition + 1
+            }
+        }
+        return numbOfRepetition
         
     }
 }

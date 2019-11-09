@@ -26,7 +26,7 @@ class Utilities: NSObject {
                 characterDivided = characterDivided + Constants.chunkSize
                 break
             }else{
-                if(messageChunk.contains(" ")){
+                if(messageChunk.contains(" ") || messageChunk.contains("\n")){
                     var spaceIndex = 0
                     let reversedCollection = (0 ..< messageChunk.length).reversed()
                     for i in reversedCollection{
@@ -68,5 +68,7 @@ class Utilities: NSObject {
         viewController.present(alert, animated: true, completion: nil)
     }
     
+    
+
 }
 
